@@ -7,5 +7,6 @@ import lombok.Getter;
 public class Board {
   private String boardId;
   private String title;
+  private String bgColor;
 
 }

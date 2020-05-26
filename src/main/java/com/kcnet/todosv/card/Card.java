@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 public class Card {
   private String cardId;
   private String description;
-  private int position;
+  private double position;
 
 
 }
