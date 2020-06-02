@@ -1,12 +1,12 @@
 package com.kcnet.todosv.auth;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter @Setter
+@Builder
 @NoArgsConstructor
-public class UserDto {
+@AllArgsConstructor
+public class UsersDto {
 
   private String email;
   private String password;
