@@ -1,14 +1,21 @@
 server:
   port: 3000
+  servlet:
+    context-path: /api
 
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /test
-
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:~/test
-    username: sa
-    password:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://192.168.0.210:3307/todo_db?characterEncoding=UTF-8&serverTimezone=KST
+    password: Kcnet00!@#$
+    username: todo
+  jpa:
+    generate-ddl: false
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+      use-new-id-generator-mappings: false
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
