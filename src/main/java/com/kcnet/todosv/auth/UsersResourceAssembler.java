@@ -1,6 +1,6 @@
 package com.kcnet.todosv.auth;
 
-import com.kcnet.todosv.board.BoardsController;
+import com.kcnet.todosv.boards.BoardsController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class UsersResourceAssembler implements RepresentationModelAssembler<User
 
     @Override
     public EntityModel<Users> toModel(Users users) {
-        return new EntityModel<Users>(users,
+        return new EntityModel<>(users,
                 linkTo(methodOn(BoardsController.class).getAll()).withSelfRel());
     }
 }

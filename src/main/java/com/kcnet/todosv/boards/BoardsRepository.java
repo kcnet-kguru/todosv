@@ -1,4 +1,4 @@
-package com.kcnet.todosv.board;
+package com.kcnet.todosv.boards;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

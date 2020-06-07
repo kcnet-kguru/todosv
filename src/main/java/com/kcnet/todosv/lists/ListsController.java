@@ -1,4 +1,4 @@
-package com.kcnet.todosv.list;
+package com.kcnet.todosv.lists;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;

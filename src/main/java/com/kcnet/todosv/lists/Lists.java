@@ -1,7 +1,6 @@
-package com.kcnet.todosv.list;
+package com.kcnet.todosv.lists;
 
 import com.kcnet.todosv.audit.BaseTimeEntity;
-import com.kcnet.todosv.board.Board;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

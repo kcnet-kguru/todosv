@@ -1,11 +1,9 @@
-package com.kcnet.todosv.board;
+package com.kcnet.todosv.boards;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/boards", produces = MediaTypes.HAL_JSON_VALUE)
@@ -22,5 +20,28 @@ public class BoardsController {
     @GetMapping
     public ResponseEntity getAll() {
         return ResponseEntity.ok(boardsRepository.findAll());
+    }
+
+    @GetMapping("/{boardId}")
+    public ResponseEntity get(@PathVariable String boardId) {
+
+        return null;
+    }
+
+    @PostMapping
+    public ResponseEntity create(@RequestBody BoardsDto dto) {
+
+
+        return null;
+    }
+
+    @PutMapping("/{boardId}")
+    public ResponseEntity modify(@PathVariable String boardId, @RequestBody BoardsDto dto) {
+        return null;
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity delete(@PathVariable String boardId) {
+        return null;
     }
 }
