@@ -1,5 +1,6 @@
 package com.kcnet.todosv.auth;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.security.MessageDigest;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping(value = "/auth", produces = MediaTypes.HAL_JSON_VALUE)
 public class AuthController {
@@ -43,7 +45,6 @@ public class AuthController {
 
     private String sha256Encoding(String password) {
         try{
-
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hash = digest.digest(password.getBytes("UTF-8"));
             StringBuffer hexStrBuff = new StringBuffer();
@@ -53,7 +54,6 @@ public class AuthController {
                 if(hex.length() == 1) hexStrBuff.append('0');
                 hexStrBuff.append(hex);
             }
-
             return hexStrBuff.toString();
         } catch (Exception e) {
             throw new RuntimeException(e);

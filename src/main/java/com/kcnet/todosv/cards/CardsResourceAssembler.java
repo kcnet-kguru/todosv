@@ -1,4 +1,4 @@
-package com.kcnet.todosv.boards;
+package com.kcnet.todosv.cards;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -8,11 +8,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class BoardsResourceAssembler implements RepresentationModelAssembler<Boards, EntityModel<Boards>> {
+public class CardsResourceAssembler implements RepresentationModelAssembler<Cards, EntityModel<Cards>> {
 
     @Override
-    public EntityModel<Boards> toModel(Boards boards) {
-        return new EntityModel<>(boards,
-                linkTo(methodOn(BoardsController.class).get(boards.getBoardId())).withSelfRel());
+    public EntityModel<Cards> toModel(Cards cards) {
+        return new EntityModel<>(cards,
+                linkTo(methodOn(CardsController.class).getOne(cards.getCardId())).withSelfRel());
     }
 }

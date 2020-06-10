@@ -1,5 +1,6 @@
 package com.kcnet.todosv.auth;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kcnet.todosv.common.BaseTimeEntity;
 import lombok.Getter;
 
@@ -12,5 +13,7 @@ public class Users extends BaseTimeEntity {
 
     @Id
     private String email;
+
+    @JsonIgnore
     private String password;
 }
