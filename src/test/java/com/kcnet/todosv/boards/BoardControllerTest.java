@@ -1,4 +1,4 @@
-package com.kcnet.todosv.board;
+package com.kcnet.todosv.boards;
 
 import com.kcnet.todosv.common.BaseControllerTest;
 import org.junit.Test;

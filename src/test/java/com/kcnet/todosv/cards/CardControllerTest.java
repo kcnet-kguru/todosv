@@ -1,4 +1,4 @@
-package com.kcnet.todosv.card;
+package com.kcnet.todosv.cards;
 
 public class CardControllerTest {
 }
