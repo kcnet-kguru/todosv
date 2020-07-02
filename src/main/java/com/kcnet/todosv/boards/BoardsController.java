@@ -29,11 +29,20 @@ public class BoardsController {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * desc: Boards list 조회
+     * @return Response Entity
+     */
     @GetMapping
     public ResponseEntity getAll() {
         return ResponseEntity.ok(boardsRepository.findAll());
     }
 
+    /**
+     *O
+     * @param @PathVariable boardId
+     * @return회 Response Entity
+     */
     @GetMapping("/{boardId}")
     public ResponseEntity get(@PathVariable String boardId) {
         return ResponseEntity.ok(boardsRepository.findById(boardId));
@@ -49,7 +58,8 @@ public class BoardsController {
     }
 
     @PutMapping("/{boardId}")
-    public ResponseEntity modify(@RequestBody BoardsDto dto) throws URISyntaxException {
+    public ResponseEntity modify(@PathVariable String boardId, @RequestBody BoardsDto dto) throws URISyntaxException {
+        dto.setBoardId(boardId);
         Boards board = modelMapper.map(dto, Boards.class);
         this.boardsRepository.save(board);
         EntityModel<Boards> entityModel = this.boardsResourceAssembler.toModel(board);

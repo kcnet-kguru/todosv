@@ -36,4 +36,41 @@ public class BoardControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void getBoard() throws Exception {
+        mockMvc.perform(
+            get("/boards/B001")
+                .contentType(MediaTypes.HAL_JSON_VALUE)
+                .accept(MediaTypes.HAL_JSON_VALUE))
+           .andDo(print())
+           .andExpect(status().isOk());
+    }
+
+    @Test
+    public void modifiedBoard() throws Exception {
+
+        BoardsDto dto = BoardsDto.builder()
+            .title("test-")
+            .bgColor("rgb(0, 121, 191)")
+            .build();
+
+        mockMvc.perform(
+            put("/boards/B001")
+                .contentType(MediaTypes.HAL_FORMS_JSON_VALUE)
+                .accept(MediaTypes.HAL_JSON_VALUE)
+                .content(this.objectMapper.writeValueAsString(dto)))
+          .andDo(print())
+          .andExpect(status().isCreated());
+    }
+
+    @Test
+    public void deleteBoard() throws Exception {
+        mockMvc.perform(
+            delete("/boards/B001")
+                .contentType(MediaTypes.HAL_FORMS_JSON_VALUE)
+                .accept(MediaTypes.HAL_JSON_VALUE))
+            .andDo(print())
+            .andExpect(status().isOk());
+    }
 }
