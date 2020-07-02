@@ -24,4 +24,18 @@ public class AuthControllerTest extends BaseControllerTest {
                .andExpect(status().isNotFound());
     }
 
+    @Test
+    public void signIn() throws Exception {
+        UsersDto dto = UsersDto.builder()
+                .email("test@kcnet.co.kr")
+                .password("kcnet00!@#$")
+                .build();
+
+        mockMvc.perform(post("/auth/")
+                        .contentType(MediaTypes.HAL_JSON)
+                        .content(this.objectMapper.writeValueAsString(dto)))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
 }

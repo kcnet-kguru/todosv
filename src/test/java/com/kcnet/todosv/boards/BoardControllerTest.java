@@ -12,7 +12,7 @@ public class BoardControllerTest extends BaseControllerTest {
 
     @Test
     public void createTest() throws Exception{
-        BoardDto dto = BoardDto.builder()
+        BoardsDto dto = BoardsDto.builder()
                     .title("test")
                     .build();
 
