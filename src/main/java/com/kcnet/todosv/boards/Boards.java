@@ -19,7 +19,7 @@ public class Boards extends BaseTimeEntity {
     private String bgColor;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "board_id", insertable = false, updatable = false)
-    List<Lists> lists;
+    @JoinColumn(name= "board_id", updatable = false, insertable = false)
+    List<Lists> lists = new ArrayList<>();
 
 }

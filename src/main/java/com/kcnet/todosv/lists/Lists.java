@@ -1,27 +1,38 @@
 package com.kcnet.todosv.lists;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kcnet.todosv.audit.BaseTimeEntity;
 import com.kcnet.todosv.cards.Cards;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@IdClass(ListsId.class)
 @Getter @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@JsonIgnoreProperties(value = { "boardId", "createdAt", "updatedAt" })
 public class Lists extends BaseTimeEntity {
 
   @Id
+  @Column(name = "board_id")
+  private String boardId;
+
+  @Id
   private String listId;
+
   private String title;
   private int position;
 
   @OneToMany(fetch = FetchType.EAGER)
-  @JoinColumn(name = "list_id", insertable = false, updatable = false)
-  List<Cards> cards;
+  @JoinColumns(value = {
+            @JoinColumn(name="board_id", updatable = false, insertable = false),
+            @JoinColumn(name="list_id", updatable = false, insertable = false)
+    }, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+  private List<Cards> cards = new ArrayList<>();
+
 }

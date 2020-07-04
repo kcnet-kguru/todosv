@@ -1,6 +1,8 @@
 package com.kcnet.todosv.lists;
 
+import com.kcnet.todosv.boards.Boards;
 import com.kcnet.todosv.boards.BoardsController;
+import com.kcnet.todosv.boards.BoardsRepository;
 import com.kcnet.todosv.boards.BoardsResourceAssembler;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
@@ -21,11 +23,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ListsController {
 
     private final ListsRepository listsRepository;
+    private final BoardsRepository boardsRepository;
     private final ModelMapper modelMapper;
     private final BoardsResourceAssembler boardsResourceAssembler;
 
-    public ListsController(ListsRepository listsRepository, ModelMapper modelMapper, BoardsResourceAssembler boardsResourceAssembler) {
+    public ListsController(ListsRepository listsRepository, BoardsRepository boardsRepository, ModelMapper modelMapper, BoardsResourceAssembler boardsResourceAssembler) {
         this.listsRepository = listsRepository;
+        this.boardsRepository = boardsRepository;
         this.modelMapper = modelMapper;
         this.boardsResourceAssembler = boardsResourceAssembler;
     }
@@ -34,11 +38,12 @@ public class ListsController {
     public ResponseEntity create(@RequestBody ListsDto dto) throws URISyntaxException {
         dto.setListId(generateListId());
         Lists list = modelMapper.map(dto, Lists.class);
+        //Boards boards = this.boardsRepository.getOne(dto.getBoardId());
+       // list.setBoards(boards);
         this.listsRepository.save(list);
         Link link = linkTo(methodOn(BoardsController.class).get(dto.getBoardId())).withSelfRel();
-        EntityModel<Lists> entityModel = new EntityModel<>(list);
-        entityModel.add(link);
-        return ResponseEntity.created(new URI(link.getHref())).body(entityModel);
+
+        return ResponseEntity.created(new URI(link.getHref())).build();
     }
 
     @PutMapping
@@ -62,7 +67,7 @@ public class ListsController {
         String nextId = "L001";
         Optional<Lists> lastListOptional = this.listsRepository.findFirstByOrderByCreatedAtDesc();
         if(lastListOptional.isPresent()) {
-            nextId = "L" + String.format("%03d", Integer.parseInt(lastListOptional.get().getListId().replace("B", "")) + 1);
+            nextId = "L" + String.format("%03d", Integer.parseInt(lastListOptional.get().getListId().replace("L", "")) + 1);
         }
         return nextId;
     }
