@@ -4,8 +4,7 @@ import com.kcnet.todosv.common.BaseControllerTest;
 import org.junit.Test;
 import org.springframework.hateoas.MediaTypes;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -45,6 +44,16 @@ public class ListControllerTest extends BaseControllerTest {
                 .andExpect(status().isCreated());
 
 
+    }
+
+    @Test
+    public void deleteList() throws Exception {
+        mockMvc.perform(
+                delete("/lists/B001/L001")
+                   .contentType(MediaTypes.ALPS_JSON_VALUE)
+                   .accept(MediaTypes.HAL_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
 }

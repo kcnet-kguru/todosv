@@ -37,10 +37,7 @@ public class ListsController {
     @PostMapping
     public ResponseEntity create(@RequestBody ListsDto dto) throws URISyntaxException {
         dto.setListId(generateListId());
-        Lists list = modelMapper.map(dto, Lists.class);
-        //Boards boards = this.boardsRepository.getOne(dto.getBoardId());
-       // list.setBoards(boards);
-        this.listsRepository.save(list);
+        this.listsRepository.save(modelMapper.map(dto, Lists.class));
         Link link = linkTo(methodOn(BoardsController.class).get(dto.getBoardId())).withSelfRel();
 
         return ResponseEntity.created(new URI(link.getHref())).build();
@@ -57,9 +54,10 @@ public class ListsController {
 
     }
 
-    @DeleteMapping("/{listId}")
-    public ResponseEntity delete(@PathVariable String listId) {
-        this.listsRepository.deleteById(listId);
+    @DeleteMapping("/{boardId}/{listId}")
+    public ResponseEntity delete(@PathVariable String boardId, @PathVariable String listId) {
+        Lists list = new Lists(boardId, listId);
+        this.listsRepository.delete(list);
         return ResponseEntity.ok().build();
     }
 

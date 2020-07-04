@@ -18,6 +18,12 @@ import javax.persistence.IdClass;
 @JsonIgnoreProperties(value = { "boardId", "listId", "createdAt", "updatedAt" })
 public class Cards extends BaseTimeEntity {
 
+    public Cards(String boardId, String listId, String cardId) {
+        this.boardId = boardId;
+        this.listId = listId;
+        this.cardId = cardId;
+    }
+
     @Id
     @Column(name="board_id")
     private String boardId;

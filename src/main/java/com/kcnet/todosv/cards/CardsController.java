@@ -2,12 +2,16 @@ package com.kcnet.todosv.cards;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/cards")
@@ -33,21 +37,24 @@ public class CardsController {
     @PostMapping
     public ResponseEntity create(@RequestBody CardsDto dto) throws URISyntaxException {
         dto.setCardId(this.generateCardId());
-        Cards cards = this.cardsRepository.save(modelMapper.map(dto, Cards.class));
-        EntityModel<Cards> entityModel = this.cardsResourceAssembler.toModel(cards);
-        return ResponseEntity.created(new URI(entityModel.getLink(cards.getCardId()).get().expand().getHref())).body(entityModel);
+        this.cardsRepository.save(modelMapper.map(dto, Cards.class));
+        Link link = linkTo(methodOn(CardsController.class).getOne(dto.getCardId())).withSelfRel();
+        return ResponseEntity.created(new URI(link.getHref())).build();
     }
 
     @PutMapping
     public ResponseEntity modify(@RequestBody CardsDto dto) throws URISyntaxException  {
         Cards cards = this.cardsRepository.save(modelMapper.map(dto, Cards.class));
+        Link link = linkTo(methodOn(CardsController.class).getOne(dto.getCardId())).withSelfRel();
         EntityModel<Cards> entityModel = this.cardsResourceAssembler.toModel(cards);
-        return ResponseEntity.created(new URI(entityModel.getLink(cards.getCardId()).get().expand().getHref())).body(entityModel);
+        entityModel.add(link);
+        return ResponseEntity.created(new URI(link.getHref())).body(entityModel);
     }
 
-    @DeleteMapping("/{cardId}")
-    public ResponseEntity delete(@PathVariable String cardId) {
-        this.cardsRepository.deleteById(cardId);
+    @DeleteMapping("/{boardId}/{listId}/{cardId}")
+    public ResponseEntity delete(@PathVariable String boardId, @PathVariable String listId, @PathVariable String cardId) {
+        Cards card = new Cards(boardId, listId, cardId);
+        this.cardsRepository.delete(card);
         return ResponseEntity.ok().build();
     }
 
