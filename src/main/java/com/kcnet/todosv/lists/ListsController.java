@@ -1,6 +1,5 @@
 package com.kcnet.todosv.lists;
 
-import com.kcnet.todosv.boards.Boards;
 import com.kcnet.todosv.boards.BoardsController;
 import com.kcnet.todosv.boards.BoardsRepository;
 import com.kcnet.todosv.boards.BoardsResourceAssembler;
@@ -23,15 +22,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class ListsController {
 
     private final ListsRepository listsRepository;
-    private final BoardsRepository boardsRepository;
     private final ModelMapper modelMapper;
-    private final BoardsResourceAssembler boardsResourceAssembler;
 
-    public ListsController(ListsRepository listsRepository, BoardsRepository boardsRepository, ModelMapper modelMapper, BoardsResourceAssembler boardsResourceAssembler) {
+    public ListsController(ListsRepository listsRepository, ModelMapper modelMapper) {
         this.listsRepository = listsRepository;
-        this.boardsRepository = boardsRepository;
         this.modelMapper = modelMapper;
-        this.boardsResourceAssembler = boardsResourceAssembler;
     }
 
     @PostMapping

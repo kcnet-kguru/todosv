@@ -3,6 +3,7 @@ package com.kcnet.todosv.lists;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.kcnet.todosv.audit.BaseTimeEntity;
 import com.kcnet.todosv.cards.Cards;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +22,13 @@ public class Lists extends BaseTimeEntity {
   public Lists(String boardId, String listId) {
     this.boardId = boardId;
     this.listId = listId;
+  }
+
+  public Lists(String boardId, String listId, String title, int position) {
+    this.boardId = boardId;
+    this.listId = listId;
+    this.title = title;
+    this.position = position;
   }
 
   @Id

@@ -1,16 +1,13 @@
 package com.kcnet.todosv.boards;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -20,40 +17,27 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping(value = "/boards", produces = MediaTypes.HAL_JSON_VALUE)
 public class BoardsController {
 
-    private final BoardsRepository boardsRepository;
-    private final BoardsResourceAssembler boardsResourceAssembler;
-    private final ModelMapper modelMapper;
+    private BoardsService boardsService;
+    private BoardsResourceAssembler boardsResourceAssembler;
 
-    public BoardsController(BoardsRepository boardsRepository, BoardsResourceAssembler boardsResourceAssembler, ModelMapper modelMapper) {
-        this.boardsRepository = boardsRepository;
+    public BoardsController(BoardsService boardsService, BoardsResourceAssembler boardsResourceAssembler) {
+        this.boardsService = boardsService;
         this.boardsResourceAssembler = boardsResourceAssembler;
-        this.modelMapper = modelMapper;
     }
 
-    /**
-     * desc: Boards list 조회
-     * @return Response Entity
-     */
     @GetMapping
     public ResponseEntity getAll() {
-        return ResponseEntity.ok(boardsRepository.findAll());
+        return ResponseEntity.ok(this.boardsService.fetchAll());
     }
 
-    /**
-     *O
-     * @param @PathVariable boardId
-     * @return회 Response Entity
-     */
     @GetMapping("/{boardId}")
     public ResponseEntity get(@PathVariable String boardId) {
-        return ResponseEntity.ok(boardsRepository.findById(boardId));
+        return ResponseEntity.ok(this.boardsService.fetchBoard(boardId));
     }
 
     @PostMapping
     public ResponseEntity create(@RequestBody BoardsDto dto) throws URISyntaxException {
-        dto.setBoardId(generateBoardId());
-        Boards board = modelMapper.map(dto, Boards.class);
-        this.boardsRepository.save(board);
+        Boards board = this.boardsService.createBoard(dto);
         EntityModel<Boards> entityModel = this.boardsResourceAssembler.toModel(board);
         return ResponseEntity.created(new URI(linkTo(methodOn(this.getClass()).get(board.getBoardId())).withSelfRel().getHref())).body(entityModel);
     }
@@ -61,25 +45,14 @@ public class BoardsController {
     @PutMapping("/{boardId}")
     public ResponseEntity modify(@PathVariable String boardId, @RequestBody BoardsDto dto) throws URISyntaxException {
         dto.setBoardId(boardId);
-        Boards board = modelMapper.map(dto, Boards.class);
-        this.boardsRepository.save(board);
+        Boards board = this.boardsService.modifyBoard(dto);
         EntityModel<Boards> entityModel = this.boardsResourceAssembler.toModel(board);
         return ResponseEntity.created(new URI(linkTo(methodOn(this.getClass()).get(board.getBoardId())).withSelfRel().getHref())).body(entityModel);
     }
 
     @DeleteMapping("/{boardId}")
     public ResponseEntity delete(@PathVariable String boardId) {
-        this.boardsRepository.deleteById(boardId);
+        this.boardsService.deleteBoard(boardId);
         return ResponseEntity.ok().build();
-    }
-
-
-    private String generateBoardId() {
-        String nextId = "B001";
-        Optional<Boards> lastBoardOptional = this.boardsRepository.findFirstByOrderByCreatedAtDesc();
-        if(lastBoardOptional.isPresent()) {
-            nextId = "B" + String.format("%03d", Integer.parseInt(lastBoardOptional.get().getBoardId().replace("B", "")) + 1);
-        }
-        return nextId;
     }
 }
