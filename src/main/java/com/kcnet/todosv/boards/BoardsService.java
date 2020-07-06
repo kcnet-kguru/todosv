@@ -5,6 +5,7 @@ import com.kcnet.todosv.lists.ListsRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,6 +30,7 @@ public class BoardsService {
         return this.boardsRepository.findById(boardId).get();
     }
 
+    @Transactional
     public Boards createBoard(BoardsDto dto) {
         String boardId = generateBoardId();
         dto.setBoardId(boardId);
@@ -61,7 +63,10 @@ public class BoardsService {
     private void createDefaultList(String boardId) {
         int pos = 65535;
         Optional<Lists> lastListOptional = this.listsRepository.findFirstByOrderByCreatedAtDesc();
-        int nextSeq = Integer.parseInt(lastListOptional.get().getListId().replace("L", "")) + 1;
+        int nextSeq = 0;
+
+        nextSeq = lastListOptional.map(list -> Integer.parseInt(list.getListId().replace("L", "")) + 1).orElse(1);
+
         this.listsRepository.save(new Lists(boardId, generateNextId(nextSeq), "Todo", pos));
         this.listsRepository.save( new Lists(boardId, generateNextId(nextSeq + 1), "Doing", pos*2));
         this.listsRepository.save(new Lists(boardId, generateNextId(nextSeq + 2), "Done", pos*4));

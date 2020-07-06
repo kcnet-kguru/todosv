@@ -13,7 +13,7 @@ public class BoardsDto {
     private String bgColor = "rgb(0, 121, 191)";
 
     public void setBgColor(String bgColor) {
-        if ("".equals(bgColor)) bgColor = "rgb(0, 121, 191)";
+        if ("".equals(bgColor) || bgColor == null) bgColor = "rgb(0, 121, 191)";
         this.bgColor = bgColor;
     }
 }

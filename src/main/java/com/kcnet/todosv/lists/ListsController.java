@@ -53,7 +53,7 @@ public class ListsController {
     public ResponseEntity delete(@PathVariable String boardId, @PathVariable String listId) {
         Lists list = new Lists(boardId, listId);
         this.listsRepository.delete(list);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(boardId);
     }
 
     private String generateListId() {
