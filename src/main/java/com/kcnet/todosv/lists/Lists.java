@@ -16,7 +16,7 @@ import java.util.List;
 @IdClass(ListsId.class)
 @Getter @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = { "boardId", "createdAt", "updatedAt" })
+@JsonIgnoreProperties(value = { "createdAt", "updatedAt" })
 public class Lists extends BaseTimeEntity {
 
   public Lists(String boardId, String listId) {
@@ -36,6 +36,7 @@ public class Lists extends BaseTimeEntity {
   private String boardId;
 
   @Id
+  @Column(name = "list_id")
   private String listId;
 
   private String title;
@@ -43,8 +44,8 @@ public class Lists extends BaseTimeEntity {
 
   @OneToMany(fetch = FetchType.EAGER)
   @JoinColumns(value = {
-            @JoinColumn(name="board_id", updatable = false, insertable = false),
-            @JoinColumn(name="list_id", updatable = false, insertable = false)
+          @JoinColumn(name="list_id", updatable = false, insertable = false),
+          @JoinColumn(name="board_id", updatable = false, insertable = false)
     }, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
   private List<Cards> cards = new ArrayList<>();
 

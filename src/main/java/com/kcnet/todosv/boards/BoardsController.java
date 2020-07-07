@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -32,7 +34,9 @@ public class BoardsController {
 
     @GetMapping("/{boardId}")
     public ResponseEntity get(@PathVariable String boardId) {
-        return ResponseEntity.ok(this.boardsService.fetchBoard(boardId));
+        Boards board = this.boardsService.fetchBoard(boardId);
+        board.setLists(board.getLists().stream().distinct().collect(Collectors.toList()));
+        return ResponseEntity.ok(board);
     }
 
     @PostMapping

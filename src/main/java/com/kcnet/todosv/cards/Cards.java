@@ -15,7 +15,7 @@ import javax.persistence.IdClass;
 @IdClass(CardsId.class)
 @Getter @Setter
 @NoArgsConstructor
-@JsonIgnoreProperties(value = { "boardId", "listId", "createdAt", "updatedAt" })
+@JsonIgnoreProperties(value = {  "listId", "createdAt", "updatedAt" })
 public class Cards extends BaseTimeEntity {
 
     public Cards(String boardId, String listId, String cardId) {

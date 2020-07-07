@@ -24,3 +24,13 @@ spring:
   output:
     ansi:
       enabled: always
+
+logging:
+  level:
+    root: info
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: trace

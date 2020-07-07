@@ -37,9 +37,9 @@ public class CardsController {
     @PostMapping
     public ResponseEntity create(@RequestBody CardsDto dto) throws URISyntaxException {
         dto.setCardId(this.generateCardId());
-        this.cardsRepository.save(modelMapper.map(dto, Cards.class));
+        Cards cards = this.cardsRepository.save(modelMapper.map(dto, Cards.class));
         Link link = linkTo(methodOn(CardsController.class).getOne(dto.getCardId())).withSelfRel();
-        return ResponseEntity.created(new URI(link.getHref())).build();
+        return ResponseEntity.created(new URI(link.getHref())).body(cards);
     }
 
     @PutMapping
