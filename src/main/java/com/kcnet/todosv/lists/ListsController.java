@@ -32,10 +32,10 @@ public class ListsController {
     @PostMapping
     public ResponseEntity create(@RequestBody ListsDto dto) throws URISyntaxException {
         dto.setListId(generateListId());
-        this.listsRepository.save(modelMapper.map(dto, Lists.class));
+        Lists list = this.listsRepository.save(modelMapper.map(dto, Lists.class));
         Link link = linkTo(methodOn(BoardsController.class).get(dto.getBoardId())).withSelfRel();
 
-        return ResponseEntity.created(new URI(link.getHref())).build();
+        return ResponseEntity.created(new URI(link.getHref())).body(list);
     }
 
     @PutMapping
