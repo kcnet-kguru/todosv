@@ -6,8 +6,8 @@ server:
 spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://192.168.0.210:3307/todo_db?characterEncoding=UTF-8&serverTimezone=KST
-#    url: jdbc:mariadb://database-1.crdzib85ofw0.us-east-2.rds.amazonaws.com:3306/todo_db?characterEncoding=UTF-8&serverTimezone=KST
+    #    url: jdbc:mariadb://192.168.0.210:3307/todo_db?characterEncoding=UTF-8&serverTimezone=KST
+    url: jdbc:mariadb://database-1.crdzib85ofw0.us-east-2.rds.amazonaws.com:3306/todo_db?characterEncoding=UTF-8&serverTimezone=KST
     password: Kcnet00!@#$
     username: todo
   jpa:
